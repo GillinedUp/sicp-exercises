@@ -1,5 +1,7 @@
 #lang sicp
 
+; Unfinished
+
 (define (square a) (* a a)) 
 
 (define (expmod base exp m)
