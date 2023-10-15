@@ -1,0 +1,10 @@
+The first program produces the answer list in reverse because it uses answer as accumulator. At each iteration the the expression '(cons x answer)' appends accumulator to the end of the new accumulator. Since 'x' values are the successive values from the list, their are appended before the previous value, thus generating the answer list in reverse.
+This can be visualized by example iteration of the procedure:
+(iter (1 4 9 16 25) ())
+(iter (4 9 16 25) (cons 1 ()))
+(iter (9 16 25) (cons 4 (cons 1 ())))
+
+Reversing 'x' and 'answer' in '(cons answer x)' would not yield expected results as the output structure will not be a properly-nested liest. Instead, it will be a two-element list, the first element of which would be a two-element list and so on.
+(iter (1 4 9 16 25) ())
+(iter (4 9 16 25) (cons () 1))
+(iter (9 16 25) (cons (cons () 1) 4))
