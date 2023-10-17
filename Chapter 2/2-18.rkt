@@ -9,16 +9,11 @@
          (cons (car list-in) list-out))))
   (iter items nil))
 
-; WIP
-
 (define (reverse-rec items)
-  (if (null? (cdr items))
-      (list (car items))
-      (list (reverse-rec (cdr items)) (car items))))
+  (if (null? items)
+      nil
+      (append
+       (reverse-rec (cdr items))
+       (list (car items)))))
 
-(define (get items)
-  (if (not (pair? (car items)))
-      (car items)
-      (cons (get (car items)) (cdr items))))
-
-(get (reverse-rec (list 1 4 9 16 25)))
+(reverse-rec (list 1 4 9 16 25))
