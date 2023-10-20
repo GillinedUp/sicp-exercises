@@ -1,13 +1,12 @@
 #lang sicp
 
 (define (fringe items)
-  (cond 
-    ((null? items) nil) 
-    ((not (pair? items)) items)
-    (else 
-      ((if (pair? (car items)) 
-        append 
-        cons)
+  (cond ((null? items) nil) 
+        ((not (pair? items)) items)
+        (else 
+         ((if (pair? (car items)) 
+              append 
+              cons)
           (fringe (car items))
           (fringe (cdr items))))))
 
