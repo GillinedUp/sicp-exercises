@@ -31,18 +31,16 @@
   (cdr branch))
 
 (define (total-weight mobile)
+  (define (weight-structure structure)
+    (if (pair? structure)
+        (total-weight structure)
+        structure))
   (if (not (pair? mobile)) 
       mobile
-      (let 
-          ((left-structure (branch-structure (left-branch mobile)))
-           (right-structure (branch-structure (right-branch mobile))))
-        (+
-         (if (pair? left-structure)
-             (total-weight left-structure)
-             left-structure)
-         (if (pair? right-structure)
-             (total-weight right-structure)
-             right-structure)))))
+      (let ((left-structure (branch-structure (left-branch mobile)))
+            (right-structure (branch-structure (right-branch mobile))))
+        (+ (weight-structure left-structure)
+           (weight-structure right-structure)))))
   
 (define (balanced? mobile)
   (if (not (pair? mobile))
@@ -51,16 +49,12 @@
             (right (right-branch mobile)))
         (let ((left-structure (branch-structure left))
               (right-structure (branch-structure right)))
-          (and 
-           (balanced? left-structure)
-           (balanced? right-structure)
-           (= 
-            (* 
-             (branch-length left) 
-             (total-weight left-structure))
-            (* 
-             (branch-length right) 
-             (total-weight right-structure))))))))
+          (and (balanced? left-structure)
+               (balanced? right-structure)
+               (= (* (branch-length left) 
+                     (total-weight left-structure))
+                  (* (branch-length right) 
+                     (total-weight right-structure))))))))
 
 (define x 
   (make-mobile
