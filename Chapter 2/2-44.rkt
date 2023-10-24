@@ -25,4 +25,9 @@
           (beside (below painter top-left)
                   (below bottom-right corner))))))
 
-(paint (corner-split diagonal-shading 6))
+(define (square-limit painter n)
+  (let ((quarter (corner-split painter n)))
+    (let ((half (beside (flip-horiz quarter) quarter)))
+      (below (flip-vert half) half))))
+
+(paint (square-limit diagonal-shading 6))
