@@ -1,0 +1,9 @@
+For an interpreter that uses applicative-order evaluation, the expression '(test 0 (p))'
+would loop on itself, in the applicative-order the evaluation starts with the evaluation of operands, 
+so in this case '0' and 'p', and then the substitution of the operand. Since the definition of 'p' is 
+a recursive one, the program will be stuck in an infinite loop.
+
+On the other hand, if this expression would be evaluated using normal-order evaluation, the interpreter
+would start with the substitution of the operand first, in this case 'test' procedure, until the 
+expression would contain only a primitive opeators, and then would evaluate the expression. In that 
+case, '(test 0 (p))' would be evaluated to '(if (= x 0) 0 (p))' which then would be evaluated to '0'

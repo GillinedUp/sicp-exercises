@@ -1,0 +1,11 @@
+Since LISP interpreter uses applicative-order evaluation, where the operands of the expression are 
+evaluated first, the expression
+
+(new-if (good-enough? guess x)
+    guess
+    (sqrt-iter (improve guess x)
+                x))
+            
+would first try to evaluate 'guess' and '(sqrt-iter (improve guess x) x)' before the substitution 
+for 'new-if', which would cause an infintite loop during the evaluation of the second operand.
+
