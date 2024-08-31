@@ -1,0 +1,6 @@
+The orders of growth of the space is linear (O(n)) in relation to the change input argument, 
+because at each recursive step, we need to keep track of our current position in the tree 
+and how to get to the root of the tree. The maximum tree depth is n.
+
+As the amount to be changed increases, the number of steps increases by some constant times
+n.      
