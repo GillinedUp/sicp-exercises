@@ -28,4 +28,4 @@
 -0.39980345741334  |#
 
 ; a) The procedure p is applied 5 times.
-; b) Growth in space is roughly O(0.4*a), similarly to the number of steps. This is a linear recursive process.
+; b) Growth in space is O(a), similarly to the number of steps. This is a linear recursive process.
