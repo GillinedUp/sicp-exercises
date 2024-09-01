@@ -1,16 +1,318 @@
 #lang sicp
 
-(define (square a) (* a a))
+(define (gcd a b)
+  (if (= b 0)
+      a
+      (gcd b (remainder a b))))
 
-(define (smallest-divisor n)
-  (find-divisor n 2))
+; normal order
 
-(define (find-divisor n test-divisor)
-  (cond ((> (square test-divisor) n) n)
-        ((divides? test-divisor n) test-divisor)
-        (else (find-divisor n (+ test-divisor 1)))))
+#| (gcd 206 40)
+   
+   (if (= 40 0)
+       206
+       (gcd 40 (remainder 206 40)))
+   
+   (gcd 40 (remainder 206 40))
+   
+   (if (= (remainder 206 40) 0)
+       40
+       (gcd
+        (remainder 206 40)
+        (remainder 40 (remainder 206 40))))
+   
+   (if (= 6 0) ; 1
+       40
+       (gcd
+        (remainder 206 40)
+        (remainder 40 (remainder 206 40))))
+   
+   (gcd
+    (remainder 206 40)
+    (remainder 40 (remainder 206 40)))
+   
+   (if (= (remainder 40 (remainder 206 40)) 0)
+       (remainder 206 40)
+       (gcd
+        (remainder 40 (remainder 206 40))
+        (remainder (remainder 206 40) (remainder 40 (remainder 206 40)))))
+   
+   (if (= (remainder 40 6) 0) ; 2
+       (remainder 206 40)
+       (gcd
+        (remainder 40 (remainder 206 40))
+        (remainder (remainder 206 40) (remainder 40 (remainder 206 40)))))
+   
+   (if (= 4 0) ; 3
+       (remainder 206 40)
+       (gcd
+        (remainder 40 (remainder 206 40))
+        (remainder (remainder 206 40) (remainder 40 (remainder 206 40)))))
+   
+   (gcd
+    (remainder 40 (remainder 206 40))
+    (remainder (remainder 206 40) (remainder 40 (remainder 206 40))))
+   
+   (if (= (remainder (remainder 206 40) (remainder 40 (remainder 206 40))) 0)
+       (remainder 40 (remainder 206 40))
+       (gcd
+        (remainder (remainder 206 40) (remainder 40 (remainder 206 40)))
+        (remainder (remainder 40 (remainder 206 40)) (remainder (remainder 206 40) (remainder 40 (remainder 206 40))))))
+   
+   (if (= (remainder (remainder 206 40) (remainder 40 6)) 0) ; 4
+       (remainder 40 (remainder 206 40))
+       (gcd
+        (remainder
+         (remainder 206 40)
+         (remainder 40 (remainder 206 40)))
+        (remainder
+         (remainder 40 (remainder 206 40))
+         (remainder (remainder 206 40) (remainder 40 (remainder 206 40))))))
+   
+   (if (= (remainder (remainder 206 40) 4) 0) ; 5
+       (remainder 40 (remainder 206 40))
+       (gcd
+        (remainder
+         (remainder 206 40)
+         (remainder 40 (remainder 206 40)))
+        (remainder
+         (remainder 40 (remainder 206 40))
+         (remainder (remainder 206 40) (remainder 40 (remainder 206 40))))))
+   
+   (if (= (remainder 6 4) 0) ; 6
+       (remainder 40 (remainder 206 40))
+       (gcd
+        (remainder
+         (remainder 206 40)
+         (remainder 40 (remainder 206 40)))
+        (remainder
+         (remainder 40 (remainder 206 40))
+         (remainder (remainder 206 40) (remainder 40 (remainder 206 40))))))
+   
+   (if (= 2 0) ; 7
+       (remainder 40 (remainder 206 40))
+       (gcd
+        (remainder
+         (remainder 206 40)
+         (remainder 40 (remainder 206 40)))
+        (remainder
+         (remainder 40 (remainder 206 40))
+         (remainder (remainder 206 40) (remainder 40 (remainder 206 40))))))
+   
+   (gcd
+    (remainder
+     (remainder 206 40)
+     (remainder 40 (remainder 206 40)))
+    (remainder
+     (remainder 40 (remainder 206 40))
+     (remainder (remainder 206 40) (remainder 40 (remainder 206 40)))))
+   
+   (if (=
+        (remainder
+         (remainder 40 (remainder 206 40))
+         (remainder (remainder 206 40) (remainder 40 (remainder 206 40))))
+        0)
+       (remainder
+        (remainder 206 40)
+        (remainder 40 (remainder 206 40)))
+       (gcd
+        (remainder
+         (remainder 40 (remainder 206 40))
+         (remainder (remainder 206 40) (remainder 40 (remainder 206 40))))
+        (remainder
+         (remainder
+          (remainder 206 40)
+          (remainder 40 (remainder 206 40)))
+         (remainder
+          (remainder 40 (remainder 206 40))
+          (remainder (remainder 206 40) (remainder 40 (remainder 206 40)))))))
+   
+   (if (=
+        (remainder
+         (remainder 40 (remainder 206 40))
+         (remainder (remainder 206 40) (remainder 40 6))) ; 8
+        0)
+       (remainder
+        (remainder 206 40)
+        (remainder 40 (remainder 206 40)))
+       (gcd
+        (remainder
+         (remainder 40 (remainder 206 40))
+         (remainder (remainder 206 40) (remainder 40 (remainder 206 40))))
+        (remainder
+         (remainder
+          (remainder 206 40)
+          (remainder 40 (remainder 206 40)))
+         (remainder
+          (remainder 40 (remainder 206 40))
+          (remainder (remainder 206 40) (remainder 40 (remainder 206 40)))))))
+   
+   (if (=
+        (remainder
+         (remainder 40 (remainder 206 40))
+         (remainder (remainder 206 40) 4)) ; 9
+        0)
+       (remainder
+        (remainder 206 40)
+        (remainder 40 (remainder 206 40)))
+       (gcd
+        (remainder
+         (remainder 40 (remainder 206 40))
+         (remainder (remainder 206 40) (remainder 40 (remainder 206 40))))
+        (remainder
+         (remainder
+          (remainder 206 40)
+          (remainder 40 (remainder 206 40)))
+         (remainder
+          (remainder 40 (remainder 206 40))
+          (remainder (remainder 206 40) (remainder 40 (remainder 206 40)))))))
+   
+   (if (=
+        (remainder
+         (remainder 40 (remainder 206 40))
+         (remainder 6 4)) ; 10
+        0)
+       (remainder
+        (remainder 206 40)
+        (remainder 40 (remainder 206 40)))
+       (gcd
+        (remainder
+         (remainder 40 (remainder 206 40))
+         (remainder (remainder 206 40) (remainder 40 (remainder 206 40))))
+        (remainder
+         (remainder
+          (remainder 206 40)
+          (remainder 40 (remainder 206 40)))
+         (remainder
+          (remainder 40 (remainder 206 40))
+          (remainder (remainder 206 40) (remainder 40 (remainder 206 40)))))))
+   
+   (if (=
+        (remainder
+         (remainder 40 (remainder 206 40))
+         2) ; 11
+        0)
+       (remainder
+        (remainder 206 40)
+        (remainder 40 (remainder 206 40)))
+       (gcd
+        (remainder
+         (remainder 40 (remainder 206 40))
+         (remainder (remainder 206 40) (remainder 40 (remainder 206 40))))
+        (remainder
+         (remainder
+          (remainder 206 40)
+          (remainder 40 (remainder 206 40)))
+         (remainder
+          (remainder 40 (remainder 206 40))
+          (remainder (remainder 206 40) (remainder 40 (remainder 206 40)))))))
+   
+   (if (=
+        (remainder (remainder 40 6) 2) ; 12
+        0)
+       (remainder
+        (remainder 206 40)
+        (remainder 40 (remainder 206 40)))
+       (gcd
+        (remainder
+         (remainder 40 (remainder 206 40))
+         (remainder (remainder 206 40) (remainder 40 (remainder 206 40))))
+        (remainder
+         (remainder
+          (remainder 206 40)
+          (remainder 40 (remainder 206 40)))
+         (remainder
+          (remainder 40 (remainder 206 40))
+          (remainder (remainder 206 40) (remainder 40 (remainder 206 40)))))))
+   
+   (if (= (remainder 4 2) 0) ; 13
+       (remainder
+        (remainder 206 40)
+        (remainder 40 (remainder 206 40)))
+       (gcd
+        (remainder
+         (remainder 40 (remainder 206 40))
+         (remainder (remainder 206 40) (remainder 40 (remainder 206 40))))
+        (remainder
+         (remainder
+          (remainder 206 40)
+          (remainder 40 (remainder 206 40)))
+         (remainder
+          (remainder 40 (remainder 206 40))
+          (remainder (remainder 206 40) (remainder 40 (remainder 206 40)))))))
+   
+   (if (= 0 0) ; 14
+       (remainder
+        (remainder 206 40)
+        (remainder 40 (remainder 206 40)))
+       (gcd
+        (remainder
+         (remainder 40 (remainder 206 40))
+         (remainder (remainder 206 40) (remainder 40 (remainder 206 40))))
+        (remainder
+         (remainder
+          (remainder 206 40)
+          (remainder 40 (remainder 206 40)))
+         (remainder
+          (remainder 40 (remainder 206 40))
+          (remainder (remainder 206 40) (remainder 40 (remainder 206 40)))))))
+   
+   (remainder
+        (remainder 206 40)
+        (remainder 40 (remainder 206 40)))
+   
+   (remainder
+        (remainder 206 40)
+        (remainder 40 6)) ; 15
+   
+   (remainder (remainder 206 40) 4) ; 16
+   
+   (remainder 6 4) ; 17
+   
+2 ; 18 |#
 
-(define (divides? a b)
-  (= (remainder b a) 0))
+; So, in the normal order, there where 18 remainder operations performed.
 
-(smallest-divisor 19999)
+; applicative order
+
+#| (gcd 206 40)
+   
+   (if (= 40 0)
+       206
+       (gcd 40 (remainder 206 40)))
+   
+   (gcd 40 (remainder 206 40))
+   
+   (gcd 40 6) ; 1
+   
+   (if (= 6 0)
+       40
+       (gcd 6 (remainder 40 6)))
+   
+   (gcd 6 (remainder 40 6))
+   
+   (gcd 6 4) ; 2
+   
+   (if (= 4 0)
+       6
+       (gcd 4 (remainder 6 4)))
+   
+   (gcd 4 (remainder 6 4))
+   
+   (gcd 4 2) ; 3
+   
+   (if (= 2 0)
+       4
+       (gcd 2 (remainder 4 2)))
+   
+   (gcd 2 (remainder 4 2))
+   
+   (gcd 2 0) ; 4
+   
+   (if (= 0 0)
+       2
+       (gcd 0 (remainder 2 0)))
+   
+2 |#
+
+; In the applicative order evaluation, remaider operation is performed 4 times.

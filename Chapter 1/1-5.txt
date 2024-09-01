@@ -1,5 +1,5 @@
 For an interpreter that uses applicative-order evaluation, the expression '(test 0 (p))'
-would loop on itself, in the applicative-order the evaluation starts with the evaluation of operands, 
+would loop on itself. In the applicative-order the evaluation starts with the evaluation of operands, 
 so in this case '0' and 'p', and then the substitution of the operand. Since the definition of 'p' is 
 a recursive one, the program will be stuck in an infinite loop.
 
