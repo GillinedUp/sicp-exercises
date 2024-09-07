@@ -1,0 +1,24 @@
+(define (fast-expt b n)
+  (cond ((= n 0) 1)
+        ((even? n) (square (fast-expt b (/ n 2))))
+        (else (* b (fast-expt b (- n 1))))))
+
+(define (expmod base exp m)
+  (remainder (fast-expt base exp) m))
+
+(define (expmod base exp m)
+  (cond ((= exp 0) 1)
+        ((even? exp)
+         (remainder
+          (square (expmod base (/ exp 2) m))
+          m))
+        (else
+         (remainder
+          (* base (expmod base (- exp 1) m))
+          m))))
+
+The difference between these two versions of expmod procedure is that
+the second one computes the remainder of multiplication at each recursive call,
+which allow us to compute exponents of numbers that are not larger than m.
+The first implementation firstly raises the number to the exponent (which potentially
+could yield a very large number) and only then calculates the remainder on it.
