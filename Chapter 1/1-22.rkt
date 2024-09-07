@@ -51,15 +51,19 @@
 1000003 *** 34
 1000033 *** 37
 1000037 *** 37
+10000019 *** 116
+10000079 *** 128
+10000103 *** 120
+100000007 *** 494
+100000037 *** 492
+100000039 *** 487
 
 (sqrt 1000) -> 31.62
 (sqrt 10000) -> 100
 (sqrt 100000) -> 316.22
 (sqrt 1000000) -> 1000
 
-Measured runtime of this algorithm againts different inputs doesn't really compare
-with it's order of growth (O(sqrt(n)), specifically between 10000 and 100000 or
-100000 and 1000000. Looks like the algorithm runs faster that the order of
-growth prediction.
+Measured runtime of this algorithm againts different inputs starts resembling
+it's order of growth (O(sqrt(n)) at inputs of the size of 1'000'000 and larger.
 
 |#
