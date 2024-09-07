@@ -1,34 +1,18 @@
 #lang sicp
 
-(define (square a) (* a a))
-
-(define (divides? a b)
-  (= (remainder b a) 0))
-
-(define (find-divisor n test-divisor)
-  (cond ((> (square test-divisor) n) n)
-        ((divides? test-divisor n) test-divisor)
-        (else (find-divisor n (+ test-divisor 1)))))
-
-(define (smallest-divisor n)
-  (find-divisor n 2))
-
-(define (prime? n)
-  (= n (smallest-divisor n)))
-
-(define (timed-prime-test n)
-  (newline)
-  (display n)
-  (start-prime-test n (runtime)))
+(define (square x)
+  (* x x))
 
 (define (expmod base exp m)
   (cond ((= exp 0) 1)
         ((even? exp)
-         (remainder (square (expmod base (/ exp 2) m))
-                    m))
+         (remainder
+          (square (expmod base (/ exp 2) m))
+          m))
         (else
-         (remainder (* base (expmod base (- exp 1) m))
-                    m))))        
+         (remainder
+          (* base (expmod base (- exp 1) m))
+          m))))
 
 (define (fermat-test n)
   (define (try-it a)
@@ -45,11 +29,41 @@
   (display elapsed-time))
 
 (define (start-prime-test n start-time)
-  (if (fast-prime? n 5)
+  (define times 5)
+  (if (fast-prime? n times)
       (report-prime (- (runtime) start-time))))
 
-(define (search-for-primes a b)
-  (timed-prime-test a)
-  (if (< a b) (search-for-primes (+ a 1) b)))
+(define (timed-prime-test n)
+  (newline)
+  (display n)
+  (start-prime-test n (runtime)))
 
-(search-for-primes 1000000 1001000)
+(define (search-for-primes start end)
+  (timed-prime-test start)
+  (if (< start end)
+      (search-for-primes
+       (+ start (if (even? start) 1 2))
+       end)))
+
+#|
+
+1000003 *** 15
+1000033 *** 14
+1000037 *** 15
+10000019 *** 12
+10000079 *** 12
+10000103 *** 12
+100000007 *** 14
+100000037 *** 12
+100000039 *** 13
+1000000007 *** 23
+1000000009 *** 22
+1000000033 *** 21
+
+(log 10000000) -> 16.11
+(log 1000000000) -> 20.72
+
+With input size growing from 10'000'000 to 1'000'000'000 times, I would expect the runtime to increase
+by ~25%, which looks to be close.
+
+|#
