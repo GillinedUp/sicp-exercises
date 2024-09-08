@@ -1,0 +1,17 @@
+(define (expmod base exp m)
+  (cond ((= exp 0) 1)
+        ((even? exp)
+         (remainder (* (expmod base (/ exp 2) m)
+                       (expmod base (/ exp 2) m))
+                    m))
+        (else
+         (remainder (* base (expmod base (- exp 1) m))
+                    m))))
+
+By using an explicit multiplication in expmod, we have to calculate the value of 
+expmod for a smaller input two times. This will create a binary tree were each node 
+represents the step of the algorithm. The number of nodes in this tree is 2^x-1, where 
+x is the depth of the tree. Since this is originaly a logarithmic process (if we 
+don't take the expmod results multiplication), the depth of the tree is log(n). 
+So, the number of nodes in the tree, and therefore the number of steps that 
+the process does is 2^(log(n)) which is n.
