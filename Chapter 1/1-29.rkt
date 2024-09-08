@@ -6,17 +6,19 @@
       (+ (term a)
          (sum term (next a) next b))))
 
-(define (simpson-integral f a b n)
-  (define h (/ (- b a) n))
-  (define (add-2h x) (+ x (* 2 h)))
+(define (simpsons-integral f a b n)
+  (define h
+    (/ (- b a) n))
+  (define (y k)
+    (f (+ a (* k h))))
+  (define (term-1 x)
+    (* 4 (y x)))
+  (define (term-2 x)
+    (* 2 (y x)))
+  (define (next x)
+    (+ x 2))
   (* (/ h 3)
-     (+ (f a)
-        (f b)
-        (* 4 (sum f (+ a h) add-2h b))
-        (* 2 (sum f (+ a (* 2 h)) add-2h b)))))
-
-(define (reciprocal x) (/ 1 x))
-
-(define e 2.718281828459)
-
-(simpson-integral reciprocal 1.0 e 1000000.0)
+     (+ (y 0)
+        (y n)
+        (sum term-1 1 next n)
+        (sum term-2 2 next n))))
