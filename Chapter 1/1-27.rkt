@@ -11,14 +11,12 @@
          (remainder (* base (expmod base (- exp 1) m))
                     m))))        
 
-(define (fermat-test-iter n a)
+(define (fermat-linear-test n)
   (define (try-it a)
     (= (expmod a n n) a))
-  (if (and (< a n) (try-it a))      
-      (fermat-test-iter n (+ a 1))
-      a))
-
-(define (fermat-test n)
-  (fermat-test-iter n 1))
-
-(fermat-test 6603)
+  (define (iter a b)
+    (if (< a b)
+        (and (try-it a)
+             (iter (+ a 1) b))
+        true))
+  (iter 1 n))
