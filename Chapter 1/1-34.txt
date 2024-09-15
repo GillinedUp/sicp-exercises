@@ -1,0 +1,17 @@
+Let's write definition of f using lambda syntax:
+
+(define f (lambda (g) (g 2)))
+
+So using lambda syntax, expression 
+
+(f f) 
+
+becomes
+
+(f (lambda (g) (g 2)))
+
+f is a procedure that takes a procedure as an argument and returns the result of 
+appying this procedure to a number 2. So the argument procedure must be a procedure 
+that accepts a number as an argument. Since f is a procedure that accepts another 
+procedure as an argument, evaluating '(f f)' will result in an error with something 
+like "2 is not a procedure" since it will try to evalutate '(2 2)'.
