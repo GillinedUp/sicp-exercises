@@ -1,5 +1,22 @@
 #lang sicp
 
+; We can rewrite the equation that defines goldern ration
+
+; phi^2 = phi + 1
+
+; to 
+
+; phi = 1 + 1 / phi
+
+; by dividing both sides of the equation by phi. We can represent this 
+; equation as mapping
+
+; x -> 1 + 1 / x
+
+; and a fixed-point function x = f(x), where
+
+; f(x) = 1 + 1 / x
+
 (define tolerance 0.00001)
 
 (define (fixed-point f first-guess)
@@ -14,7 +31,5 @@
           (try next))))
   (try first-guess))
 
-(define (golden-ratio first-guess)
-  (fixed-point (lambda (x) (+ 1 (/ 1 x))) first-guess))
-
-(golden-ratio 1.0)
+(define golden-ratio
+  (fixed-point (lambda (x) (+ 1.0 (/ 1.0 x))) 1.5))
