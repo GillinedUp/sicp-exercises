@@ -1,14 +1,17 @@
 #lang sicp
 
-(define (tan x)
-  (define (iter n d k result)
-    (if (= k 0)
-        result
-        (iter n d (- k 1) (/ (n k) (- (d k) result)))))
-  (iter
-   (lambda (i) (if (= i 1) x (* x x)))
-   (lambda (i) (+ i (- i 1)))
-   100
-   1))
+(define (cont-frac n d k)
+  (define (iter acc i)
+    (if (= i 0)
+        acc
+        (iter (/ (n i)
+                 (+ (d i) acc))
+              (- i 1))))
+  (iter 0.0 k))
 
-(tan 5.0)
+(define (tan-cf x k)
+  (cont-frac (lambda (i)
+               (if (= i 1) x (* x x)))
+             (lambda (i)
+               (if (= i 1) 1 (+ i (- i 1))))
+             k))
