@@ -1,13 +1,24 @@
 #lang sicp
 
-(define (make-segment a b)
-  (cons a b))
+; abstraction barrier - segment package, depends on "point", "pair" and "average" packages
 
-(define (start-segment x)
-  (car x))
+(define (make-segment start end)
+  (cons start end))
 
-(define (end-segment x)
-  (cdr x))
+(define (start-segment s)
+  (car s))
+
+(define (end-segment s)
+  (cdr s))
+
+(define (midpoint-segment s)
+  (make-point
+   (average (x-point (start-segment s))
+            (x-point (end-segment s)))
+   (average (y-point (start-segment s))
+            (y-point (end-segment s)))))
+
+; abstraction barrier - "point" package, depends on "pair" package
 
 (define (make-point x y)
   (cons x y))
@@ -26,18 +37,8 @@
   (display (y-point p))
   (display ")"))
 
-(define (midpoint-segment seg)
-  (define (avg a b)
-    (/ (+ a b) 2.0))
-  (let ((start-seg (start-segment seg))
-        (end-seg (end-segment seg)))
-    (make-point
-     (avg (x-point start-seg) (x-point end-seg))
-     (avg (y-point start-seg) (y-point end-seg)))))
+; abstraction barrier - "average" package
 
-(print-point
- (midpoint-segment
-  (make-segment
-   (make-point 2 5)
-   (make-point 2 8))))
+(define (average a b)
+  (/ (+ a b) 2.0))
  
