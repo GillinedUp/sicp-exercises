@@ -1,20 +1,28 @@
 #lang sicp
 
+; return a procedure that accepts a selector procedure and applies it to its parameters
+
 (define (cons x y)
-  (lambda (m) (m x y))) ; take a selector function and apply it to both arguments
+  (lambda (m) (m x y)))
+
+; take a procedure and run it supplying a selector procedure that accepts to parameters and returns
+; the first one
 
 (define (car z)
-  (z (lambda (p q) p))) ; return a fuction that returns the first element and pass it as a selector fuction
+  (z (lambda (p q) p)))
+
+; take a procedure and run it supplying a selector procedure that accepts to parameters and returns
+; the second one
 
 (define (cdr z)
-  (z (lambda (p q) q))) ; return a fuction that returns the second element and pass it as a selector fuction
+  (z (lambda (p q) q)))
 
-;(car (cons 1 2))
-;(car (lambda (m) (m 1 2)))
-;((lambda (m) (m 1 2)) (lambda (p q) p)) ; we specify what function (second lambda) is passed as a selector function to apply it (first lambda)
-((lambda (p q) p) 1 2)
+; substitution:
 
-;(cdr (cons 1 2))
-;(cdr (lambda (m) (m 1 2)))
-;((lambda (m) (m 1 2)) (lambda (p q) q)) ; we specify what function (second lambda) is passed as a selector function to apply it (first lambda)
-((lambda (p q) q) 1 2)
+; (car (cons 1 2))
+
+; (car (lambda (m) (m 1 2)))
+
+; (lambda (m) (m 1 2) (lambda (p q) p))
+
+; 1
