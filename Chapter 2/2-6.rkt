@@ -1,41 +1,156 @@
 #lang sicp
 
-; I can't believe I've done it!
+(define zero
+  (lambda (f)
+    (lambda (x) x)))
 
-(define zero (lambda (f) (lambda (x) x)))
+(define one
+  (lambda (f)
+    (lambda (x)
+      (f x))))
 
-(define (add-1 n) (lambda (f) (lambda (x) (f ((n f) x))))) ; ((n f) x) - takes out the value from 'n', 'f' then wraps this as an argument 
+(define two
+  (lambda (f)
+    (lambda (x)
+      (f (f x)))))
 
-;(add-1 zero)
-;(add-1 (lambda (f) (lambda (x) x)))
-;(lambda (f) (lambda (x) (f (((lambda (f) (lambda (x) x)) f) x))))
-;(lambda (f) (lambda (x) (f ((lambda (x) x) x))))
-;(lambda (f) (lambda (x) (f x)))
+(define add-1
+  (lambda (n)
+    (lambda (f)
+      (lambda (x)
+        (f ((n f) x))))))
 
-(define one (lambda (f) (lambda (x) (f x))))
+(define add
+  (lambda (f g)
+    (lambda (n)
+      (lambda (x)
+        ((f n) ((g n) x))))))
 
-;(add-1 one)
-;(add-1 (lambda (f) (lambda (x) (f x))))
-;(lambda (f) (lambda (x) (f (((lambda (f) (lambda (x) (f x))) f) x))))
-;(lambda (f) (lambda (x) (f (f x))))
+; deriving one
 
-(define two (lambda (f) (lambda (x) (f (f x)))))
+; (add-1 zero)
 
-;(lambda (f) (lambda (x) (f x))) ; one
-;(lambda (f) (lambda (x) (f (f x)))) ; two
-;(lambda (f) (lambda (x) (f (f (f x))))) ; three
+; (add-1 (lambda (g)
+;          (lambda (x) x)))
 
-(define (plus a b)
-  (lambda (f) (lambda (x) ((a f) ((b f) x)))))
+; ((lambda (n)
+;    (lambda (f)
+;      (lambda (x)
+;        (f ((n f) x)))))
+;  (lambda (g)
+;    (lambda (x) x)))
 
-(define (plus-one x)
-  (+ x 1))
+; (lambda (f)
+;   (lambda (x)
+;     (f (((lambda (g)
+;            (lambda (x) x))
+;          f) x))))
 
-((zero plus-one) 0)
+; (lambda (f)
+;   (lambda (x)
+;     (f ((lambda (x) x) x))))
 
-((one plus-one) 0)
+; (lambda (f)
+;   (lambda (x)
+;     (f x)))
 
-((two plus-one) 0)
+; deriving two
 
-(((plus two two) plus-one) 0)
+; (add-1 one)
 
+; (add-1 (lambda (g)
+;          (lambda (x)
+;            (g x))))
+
+; (lambda (n)
+;   (lambda (f)
+;     (lambda (x)
+;       (f ((n f) x))))
+;   (lambda (g)
+;     (lambda (x)
+;       (g x))))
+
+; (lambda (f)
+;   (lambda (x)
+;     (f (((lambda (g)
+;            (lambda (x)
+;              (g x)))
+;          f) x))))
+
+; (lambda (f)
+;   (lambda (x)
+;     (f ((lambda (x)
+;           (f x))
+;         x))))
+
+; (lambda (f)
+;   (lambda (x)
+;     (f (f x))))
+
+; deriving add on the (add one two) example
+
+; (define add
+;   (lambda (f g)
+;     (lambda (n)
+;       (lambda (x)
+;         ((f n) ((g n) x))))))
+
+; (add one two)
+
+; (add (lambda (f)
+;        (lambda (x)
+;          (f x)))
+;      (lambda (f)
+;        (lambda (x)
+;          (f (f x)))))
+
+; ((lambda (f g)
+;    (lambda (n)
+;      (lambda (x)
+;        ((f n) ((g n) x)))))
+;  (lambda (f)
+;    (lambda (x)
+;      (f x)))
+;  (lambda (f)
+;    (lambda (x)
+;      (f (f x)))))
+
+; (lambda (n)
+;   (lambda (x)
+;     (((lambda (f)
+;         (lambda (x)
+;           (f x)))
+;       n)
+;      (((lambda (f)
+;          (lambda (x)
+;            (f (f x))))
+;        n)
+;       x))))
+
+; (lambda (n)
+;   (lambda (x)
+;     (((lambda (f)
+;         (lambda (x)
+;           (f x)))
+;       n)
+;      ((lambda (x)
+;         (n (n x)))
+;       x))))
+
+; (lambda (n)
+;   (lambda (x)
+;     (((lambda (f)
+;         (lambda (x)
+;           (f x)))
+;       n)
+;      (n (n x)))))
+
+; (lambda (n)
+;   (lambda (x)
+;     ((lambda (x)
+;        (n x))
+;      (n (n x)))))
+
+; (lambda (n)
+;   (lambda (x)
+;     (n (n (n x)))))
