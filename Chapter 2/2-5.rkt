@@ -1,18 +1,15 @@
 #lang sicp
 
-(define (cons x y)
-  (* (expt 2 x) (expt 3 y)))
+(define (cons a b)
+  (* (expt 2 a) (expt 3 b)))
 
-(define (iter x base)
-  (if (> (remainder x base) 0)
-      x
-      (iter (/ x base) base)))
+(define (div-iter div base n)
+  (if (not (= (remainder div base) 0))
+      n
+      (div-iter (/ div base) base (+ n 1))))
 
-(define (car z)
-  (log (iter z 3) 2))
+(define (car x)
+  (div-iter x 2 0))
 
-(define (cdr z)
-  (log (iter z 2) 3))
-
-(car (cons 2 3))
-(cdr (cons 2 3))
+(define (cdr x)
+  (div-iter x 3 0))
