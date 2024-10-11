@@ -1,11 +1,6 @@
 #lang sicp
 
 (define (last-pair items)
-  (if (null? (cdr items))
-      items
-      (last-pair (cdr items))))
-
-(last-pair (list 23 72 149 34))
-
-
-
+  (cond ((null? items) nil)
+        ((null? (cdr items)) (car items))
+        (else (last-pair (cdr items)))))
