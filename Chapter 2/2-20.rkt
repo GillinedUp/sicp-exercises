@@ -1,18 +1,14 @@
 #lang sicp
 
-(define (same-parity x . y)
-  (define (filter predicate? items)
-    (cond ((null? items)
+(define (same-parity first-arg . rest-of-args)
+  (define (filter args)
+    (cond ((null? args)
            nil)
-          ((predicate? (car items))
-           (cons (car items) (filter predicate? (cdr items))))
+          ((= (remainder (car args) 2)
+              (remainder first-arg 2))
+           (cons (car args)
+                 (filter (cdr args))))
           (else
-           (filter predicate? (cdr items)))))
-  (cons x (filter
-           (if (odd? x) odd? even?)
-           y)))
+           (filter (cdr args)))))
+  (cons first-arg (filter rest-of-args)))
 
-(same-parity 1 2 3 4 5 6 7)
-
-(same-parity 2 3 4 5 6 7)
-                       
