@@ -1,14 +1,17 @@
 #lang sicp
 
-(define (tree-map op tree)
-  (cond ((null? tree) nil)
-        ((not (pair? tree)) (op tree))
-        (else (cons (tree-map op (car tree))
-                    (tree-map op (cdr tree))))))
-
 (define (square x) (* x x))
 
+(define (tree-map proc tree)
+  (map (lambda (sub-tree)
+         (if (not (pair? sub-tree))
+             (proc sub-tree)
+             (tree-map proc sub-tree)))
+       tree))
+
 (define (square-tree tree) (tree-map square tree))
+
+; test, should return (1 (4 (9 16) 25) (36 49))
 
 (square-tree
  (list 1
