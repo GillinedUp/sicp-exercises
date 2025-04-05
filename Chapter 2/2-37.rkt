@@ -1,10 +1,10 @@
 #lang sicp
 
-(define (accumulate op initial sequence)
-  (if (null? sequence)
-      initial
-      (op (car sequence)
-          (accumulate op initial (cdr sequence)))))
+(define (accumulate op init seqs)
+  (if (null? seqs)
+      init
+      (op (car seqs)
+          (accumulate op init (cdr seqs)))))
 
 (define (accumulate-n op init seqs)
   (if (null? (car seqs))
@@ -18,33 +18,39 @@
                           (map (lambda (x) (cdr x))
                                seqs)))))
 
+; abstraction barrier: matrix and vector operations
+
 (define (dot-product v w)
   (accumulate + 0 (map * v w)))
 
 (define (matrix-*-vector m v)
-  (map (lambda (row) (dot-product v row)) m))
+  (map (lambda (m_row)
+         (dot-product m_row v))
+       m))
 
 (define (transpose mat)
-  (accumulate-n (lambda (x y) (cons x y))
-                nil
-                mat))
+  (accumulate-n cons nil mat))
 
 (define (matrix-*-matrix m n)
   (let ((cols (transpose n)))
-    (map (lambda (row) (matrix-*-vector cols row)) m)))
+    (map (lambda (m_row)
+           (matrix-*-vector cols m_row))
+         m)))
 
-(define v1 (list 1 2 3))
+; matrix-*-vector test, should return (14 32 50)
 
-(define v2 (list 4 5 6))
+(define m (list (list 1 2 3)
+                (list 4 5 6)
+                (list 7 8 9)))
 
-(dot-product v1 v2)
+(define v (list 1 2 3))
 
-(define m1 (list (list 1 2 3)
-                 (list 4 5 6)
-                 (list 7 8 9)))
+(matrix-*-vector m v)
 
-(matrix-*-vector m1 v2)
+; transpose test, should return ((1 4 7) (2 5 8) (3 6 9))
 
-(transpose m1)
+(transpose m)
 
-(matrix-*-matrix m1 (transpose m1))
+; matrix-*-matrix test, should return ((30 36 42) (66 81 96) (102 126 150))
+
+(matrix-*-matrix m m)
