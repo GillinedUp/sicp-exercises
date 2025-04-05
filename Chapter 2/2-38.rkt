@@ -28,11 +28,12 @@
 (fold-left list nil (list 1 2 3))
 (list (list (list nil 1) 2) 3)
 
+; In order to fold-right and fold-left procedures to produces the same results, op parameter should 
+; be commutative, e.g. the application of the operator should produce the same result regardless of 
+; the order of the operands. Examples of commutative operators: +, *.
+
 (= (fold-left + 0 (list 1 2 3))
    (fold-right + 0 (list 1 2 3)))
 
 (= (fold-left * 1 (list 1 2 3))
    (fold-right * 1 (list 1 2 3)))
-
-; To guaarantee that 'fold-right' and 'fold-left' will produce
-; the same value for any sequence, 'op' should be commutative
