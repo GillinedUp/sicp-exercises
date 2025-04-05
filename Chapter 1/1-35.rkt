@@ -1,6 +1,6 @@
 #lang sicp
 
-; We can rewrite the equation that defines goldern ration
+; We can rewrite the equation that defines the golden ratio
 
 ; phi^2 = phi + 1
 
