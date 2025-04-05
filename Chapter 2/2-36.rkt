@@ -1,10 +1,10 @@
 #lang sicp
 
-(define (accumulate op initial sequence)
-  (if (null? sequence)
-      initial
-      (op (car sequence)
-          (accumulate op initial (cdr sequence)))))
+(define (accumulate op init seqs)
+  (if (null? seqs)
+      init
+      (op (car seqs)
+          (accumulate op init (cdr seqs)))))
 
 (define (accumulate-n op init seqs)
   (if (null? (car seqs))
@@ -17,6 +17,8 @@
                           init
                           (map (lambda (x) (cdr x))
                                seqs)))))
+
+; test, should return (22 26 30)
 
 (define s
   (list (list 1 2 3)
