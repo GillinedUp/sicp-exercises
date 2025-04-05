@@ -17,14 +17,16 @@
 (define (length sequence)
   (accumulate (lambda (_ y) (+ 1 y)) 0 sequence))
 
-; map test, should return (1 4 9 16)
+; tests
+
+; should return (1 4 9 16)
 
 (map (lambda (x) (* x x)) (list 1 2 3 4))
 
-; append test, should return (1 2 3 4 5 6)
+; should return (1 2 3 4 5 6)
 
 (append (list 1 2 3) (list 4 5 6))
 
-; length test, should return 5
+; should return 5
 
 (length (list 1 2 3 4 5))

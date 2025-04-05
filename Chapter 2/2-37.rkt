@@ -37,7 +37,7 @@
            (matrix-*-vector cols m_row))
          m)))
 
-; matrix-*-vector test, should return (14 32 50)
+; tests
 
 (define m (list (list 1 2 3)
                 (list 4 5 6)
@@ -45,12 +45,14 @@
 
 (define v (list 1 2 3))
 
+; should return (14 32 50)
+
 (matrix-*-vector m v)
 
-; transpose test, should return ((1 4 7) (2 5 8) (3 6 9))
+; should return ((1 4 7) (2 5 8) (3 6 9))
 
 (transpose m)
 
-; matrix-*-matrix test, should return ((30 36 42) (66 81 96) (102 126 150))
+; should return ((30 36 42) (66 81 96) (102 126 150))
 
 (matrix-*-matrix m m)
