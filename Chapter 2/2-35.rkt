@@ -6,15 +6,15 @@
       (op (car sequence)
           (accumulate op initial (cdr sequence)))))
 
-(define (count-leaves t)
-  (accumulate (lambda (x y) (+ x y))
+(define (count-leaves tree)
+  (accumulate +
               0
-              (map (lambda (x)
-                     (if (not (pair? x))
+              (map (lambda (sub-tree)
+                     (if (not (pair? sub-tree))
                          1
-                         (count-leaves x)))
-                   t)))
+                         (count-leaves sub-tree)))
+                   tree)))
 
-(define y (list (list 1 2 (list (list 3 4) 5)) 6 (list 7 8) 9))
+; test, should return 9
 
-(count-leaves y)
+(count-leaves (list (list 1 2 (list (list 3 4) 5)) 6 (list 7 8) 9))
