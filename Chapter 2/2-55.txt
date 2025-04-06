@@ -1,0 +1,4 @@
+To understand why (car ''abracadabra) prints quote, we need remember that 'symbol is just a syntatic sugar for
+(quote symbol). Using this fact, we can rewrite (car ''abracadabra) as (car (quote 'abracadabra)) and further as 
+(car (quote (quote abracadabra))). Using this representation, we see that evaluting (car (quote (quote abracadabra)))
+whould yeld quote.
