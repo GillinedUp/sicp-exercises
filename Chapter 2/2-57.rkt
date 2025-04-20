@@ -15,6 +15,18 @@
 (define (same-variable? v1 v2)
   (and (variable? v1) (variable? v2) (eq? v1 v2)))
 
+(define (second-exp-selector exp op-char)
+  (define (is-part-of-larger-exp? exp)
+    (and (pair? exp)
+         (or (symbol? (car exp))
+             (number? (car exp)))
+         (not (member? (car exp) '(+ * **)))
+         (> (length exp) 1)))
+  (let ((second-exp (cddr exp)))
+    (if (is-part-of-larger-exp? second-exp) ; second-exp is the part of a longer sum/product, e.g. (y 3) in (+ x y 3)
+        (cons op-char second-exp) ; add plus/times so that we get (+ y 3)
+        (car second-exp)))) ; otherwise its either a number, symbol or another operation represented as a list, e.g. (+ x 3) or (+ x y) or (+ x (* y 3))
+
 ; sum handling procedures
 
 (define (sum? x)
@@ -34,16 +46,7 @@
 (define (addend s) (cadr s))
 
 (define (augend s)
-  (define (part-of-sum? exp)
-    (and (pair? exp)
-         (or (symbol? (car exp))
-             (number? (car exp)))
-         (not (member? (car exp) '(+ * **)))
-         (> (length exp) 1)))
-  (let ((second-exp (cddr s)))
-    (cond ((part-of-sum? second-exp) ; second-exp is the part of the longer sum, e.g. (y 3) in (+ x y 3)
-           (cons '+ second-exp)) ; add plus so that we get (+ y 3))
-          (else (car second-exp))))) ; otherwise its either a number, symbol or another operation represented as a list, e.g. (+ x 3) or (+ x y) or (+ x (* y 3))
+  (second-exp-selector s '+)) ;
 
 ; product handling procedures
 
@@ -64,16 +67,7 @@
 (define (multiplier p) (cadr p))
 
 (define (multiplicand p)
-  (define (part-of-product? exp)
-    (and (pair? exp)
-         (or (symbol? (car exp))
-             (number? (car exp)))
-         (not (member? (car exp) '(+ * **)))
-         (> (length exp) 1)))
-  (let ((second-exp (cddr p)))
-    (cond ((part-of-product? second-exp)
-           (cons '* second-exp))
-          (else (car second-exp)))))
+  (second-exp-selector p '*))
 
 ; exponentiation handling procedures
 
