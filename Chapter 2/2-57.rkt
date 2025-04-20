@@ -36,12 +36,14 @@
 (define (augend s)
   (define (part-of-sum? exp)
     (and (pair? exp)
-         (symbol? (car exp))
-         (not (member? (car exp) '(+ * **)))))
+         (or (symbol? (car exp))
+             (number? (car exp)))
+         (not (member? (car exp) '(+ * **)))
+         (> (length exp) 1)))
   (let ((second-exp (cddr s)))
-    (if (part-of-sum? second-exp) ; second-exp is the part of the longer sum, e.g. (y 3) in (+ x y 3)
-        (cons '+ second-exp) ; add plus so that we get (+ y 3)
-        (car second-exp)))) ; otherwise its either a number, symbol or another operation represented as a list, e.g. (+ x 3) or (+ x y) or (+ x (* y 3))
+    (cond ((part-of-sum? second-exp) ; second-exp is the part of the longer sum, e.g. (y 3) in (+ x y 3)
+           (cons '+ second-exp)) ; add plus so that we get (+ y 3))
+          (else (car second-exp))))) ; otherwise its either a number, symbol or another operation represented as a list, e.g. (+ x 3) or (+ x y) or (+ x (* y 3))
 
 ; product handling procedures
 
@@ -101,13 +103,17 @@
 ; tests
 
 ; should print (* 5 (** x 4))
-; TODO: uncomment later
-; (deriv '(** x 5) 'x)
 
-; should print (* (* 2 (+ (* 3 x) 1)) 3)
-; TODO: uncomment later
-; (deriv '(** (+ (* 3 x) 1) 2) 'x)
+(deriv '(** x 5) 'x)
+
+; should print (* (* 2 (+ (* 3 x) 1)) 3); 2(3x + 1) * 3
+
+(deriv '(** (+ (* 3 x) 1) 2) 'x) ; (3x + 1)^2
 
 ; should print 4
 
 (deriv '(+ x y (* x 3)) 'x)
+
+; should print (+ 2 (* 3 (* 2 x))); 2 + (3 * 2x) 
+
+(deriv '(+ (* 2 x) 3 y (* 3 (** x 2))) 'x) ; 2x + 3 + y + 3x^2
