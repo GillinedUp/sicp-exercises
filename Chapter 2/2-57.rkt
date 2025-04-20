@@ -51,15 +51,29 @@
   (and (pair? x) (eq? (car x) '*)))
 
 (define (make-product m1 m2)
-  (cond ((or (=number? m1 0) (=number? m2 0)) 0)
-        ((=number? m1 1) m2)
-        ((=number? m2 1) m1)
-        ((and (number? m1) (number? m2)) (* m1 m2))
+  (cond ((or (=number? m1 0) (=number? m2 0))
+         0)
+        ((=number? m1 1)
+         m2)
+        ((=number? m2 1)
+         m1)
+        ((and (pair? m2) (eq? (car m2) '*))
+         (append (list '* m1) (cdr m2)))
         (else (list '* m1 m2))))
 
 (define (multiplier p) (cadr p))
 
-(define (multiplicand p) (caddr p))
+(define (multiplicand p)
+  (define (part-of-product? exp)
+    (and (pair? exp)
+         (or (symbol? (car exp))
+             (number? (car exp)))
+         (not (member? (car exp) '(+ * **)))
+         (> (length exp) 1)))
+  (let ((second-exp (cddr p)))
+    (cond ((part-of-product? second-exp)
+           (cons '* second-exp))
+          (else (car second-exp)))))
 
 ; exponentiation handling procedures
 
@@ -114,6 +128,10 @@
 
 (deriv '(+ x y (* x 3)) 'x)
 
-; should print (+ 2 (* 3 (* 2 x))); 2 + (3 * 2x) 
+; should print (+ 2 (* 3 2 x)); 2 + (3 * 2x)
 
 (deriv '(+ (* 2 x) 3 y (* 3 (** x 2))) 'x) ; 2x + 3 + y + 3x^2
+
+; should print (+ (* x y) (* y (+ x 3))) ; (2x + 3)y
+
+(deriv '(* x y (+ x 3)) 'x) ; x * y * (x + 3)
